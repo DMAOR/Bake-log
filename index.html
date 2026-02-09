@@ -2,60 +2,68 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>ארכיון אפיות נושם - דורון</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ארכיון אפיות - דורון</title>
     <style>
-        body { font-family: system-ui, sans-serif; margin: 20px; background: #fdfaf6; }
-        .controls { background: #efebe9; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
-        table { width: 100%; border-collapse: collapse; background: white; }
+        body { font-family: system-ui, sans-serif; margin: 20px; background: #fdfaf6; color: #333; }
+        h1 { color: #5d4037; text-align: center; }
+        .controls { background: #efebe9; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
-        th { background: #8d6e63; color: white; cursor: pointer; }
+        th { background: #8d6e63; color: white; }
         tr:hover { background: #f5f5f5; cursor: pointer; }
-        .filter-btn { padding: 8px 15px; background: #8d6e63; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .filter-btn { padding: 8px 15px; background: #8d6e63; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .filter-btn:hover { background: #5d4037; }
+        .btn-reset { background: #757575; }
+        .master-recipe { background: #fff; padding: 15px; border: 1px solid #d7ccc8; border-radius: 8px; margin-bottom: 20px; border-right: 5px solid #8d6e63; }
     </style>
 </head>
 <body>
 
-    <h1>🍞 ארכיון אפיות חכם</h1>
+    <h1>🍞 ארכיון אפיות "נושם"</h1>
+
+    <div class="master-recipe">
+        <strong>📍 מסטר כפרי לימון:</strong> 300ג לבן | 36ג שיפון | 14ג סויה | 262.5ג מים (75%) | 2.5 מ"ל לימון
+    </div>
 
     <div class="controls">
-        <strong>סינון מהיר:</strong>
-        <button class="filter-btn" onclick="filterTable('באלק', 10)">באלק מעל 10 שעות</button>
-        <button class="filter-btn" onclick="filterTable('הידרציה', 75)">הידרציה גבוהה (75%+)</button>
-        <button class="filter-btn" onclick="resetTable()">הצג הכל</button>
+        <span>סנן לפי:</span>
+        <button class="filter-btn" onclick="filterTable('bulk', 10)">באלק 10+ שעות</button>
+        <button class="filter-btn" onclick="filterTable('hyd', 80)">הידרציה 80%+</button>
+        <button class="filter-btn btn-reset" onclick="resetTable()">הצג הכל</button>
     </div>
 
     <table id="bakeTable">
         <thead>
             <tr>
-                <th onclick="sortTable(0)">תאריך ↕</th>
-                <th onclick="sortTable(1)">סוג קובץ ↕</th>
-                <th onclick="sortTable(2)">זמן באלק (שעות) ↕</th>
-                <th onclick="sortTable(3)">הידרציה % ↕</th>
-                <th>קישור לתיעוד</th>
+                <th>תאריך</th>
+                <th>סוג האפייה</th>
+                <th>זמן באלק</th>
+                <th>הידרציה</th>
+                <th>פעולה</th>
             </tr>
         </thead>
         <tbody>
-            <tr data-bulk="10.25" data-hyd="75">
-                <td>2026-02-08</td>
+            <tr data-bulk="10.25" data-hyd="75" onclick="window.location='2026-02-08_-2-כפרי-לימון.html';">
+                <td>08/02/26</td>
                 <td>כפרי-לימון-2</td>
                 <td>10:15</td>
                 <td>75%</td>
-                <td><a href="2026-02-08_-2-כפרי-לימון.html">פתח תיעוד מלא</a></td>
+                <td><a href="2026-02-08_-2-כפרי-לימון.html">📄 פתח</a></td>
             </tr>
-            <tr data-bulk="5" data-hyd="80">
-                <td>2026-02-06</td>
+            <tr data-bulk="5" data-hyd="80" onclick="window.location='2026-02-06_100%-שיפון.html';">
+                <td>06/02/26</td>
                 <td>שיפון 100%</td>
                 <td>05:00</td>
                 <td>80%</td>
-                <td><a href="2026-02-06_100%-שיפון.html">פתח תיעוד מלא</a></td>
+                <td><a href="2026-02-06_100%-שיפון.html">📄 פתח</a></td>
             </tr>
-            <tr data-bulk="3" data-hyd="85">
-                <td>2026-02-06</td>
-                <td>פוקציה</td>
+            <tr data-bulk="3" data-hyd="85" onclick="window.location='2026-02-06_(1)_פוקציה.html';">
+                <td>06/02/26</td>
+                <td>פוקאצ'ה</td>
                 <td>03:00</td>
                 <td>85%</td>
-                <td><a href="2026-02-06_(1)_פוקציה.html">פתח תיעוד מלא</a></td>
+                <td><a href="2026-02-06_(1)_פוקציה.html">📄 פתח</a></td>
             </tr>
         </tbody>
     </table>
@@ -64,20 +72,12 @@
         function filterTable(type, threshold) {
             const rows = document.querySelectorAll('#bakeTable tbody tr');
             rows.forEach(row => {
-                const val = parseFloat(type === 'באלק' ? row.dataset.bulk : row.dataset.hyd);
+                const val = parseFloat(row.getAttribute('data-' + type));
                 row.style.display = val >= threshold ? '' : 'none';
             });
         }
-
         function resetTable() {
             document.querySelectorAll('#bakeTable tbody tr').forEach(row => row.style.display = '');
-        }
-
-        function sortTable(n) {
-            // קוד למיון אוטומטי של הטבלה לפי לחיצה על הכותרת
-            var table = document.getElementById("bakeTable");
-            var rows = table.rows;
-            // (המשך קוד המיון...)
         }
     </script>
 </body>
