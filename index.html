@@ -1,461 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דוח אפייה משולב – מינימלי</title>
-<style>
-  :root{--b:#cfcfcf;--m:#666;--w:980px}
-  body{font-family:system-ui,Arial;font-size:14px;margin:16px}
-  h3{margin:10px 0}
-  .mut{color:var(--m);font-size:12px;margin-top:4px}
-  table{border-collapse:collapse;width:100%;max-width:var(--w)}
-  td,th{border:1px solid var(--b);padding:4px 6px;text-align:right;vertical-align:middle}
-  input,select,textarea{box-sizing:border-box;font:inherit}
-  .num{width:92px}
-  .txt{width:100%}
-  .btn{padding:4px 8px;border:1px solid var(--b);background:#fff;cursor:pointer}
-  .gcell{white-space:nowrap}
-  textarea{width:100%;min-height:64px;resize:vertical}
-  details{max-width:var(--w);margin-top:14px}
-  summary{cursor:pointer;user-select:none}
-  .ok{color:#065f46;font-size:12px}
-  .warn{color:#b91c1c;font-size:12px}
-  .rowhide{display:none}
-  .grid{max-width:var(--w)}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bake-Log: יומן האפייה של דורון</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f1ea; }
+        h1, h2 { color: #5d4037; border-bottom: 2px solid #d7ccc8; padding-bottom: 10px; }
+        .master-recipe { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; border-right: 6px solid #8d6e63; }
+        .log-entry { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #8d6e63; color: white; }
+        .file-link { display: inline-block; background: #e0e0e0; padding: 5px 10px; border-radius: 4px; text-decoration: none; color: #333; margin: 5px; }
+        .file-link:hover { background: #d0d0d0; }
+        img { max-width: 100%; border-radius: 8px; margin-top: 10px; display: block; }
+    </style>
 </head>
 <body>
 
-<h3>דוח אפייה משולב</h3>
-<div style="max-width:980px;margin:8px 0 14px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-  <button type="button" class="btn" onclick="saveBake()">שמור אפייה (קובץ חדש)</button>
-  <span class="mut">מוריד קובץ HTML עם כל הנתונים כפי שהם עכשיו.</span>
-</div>
+    <h1>🍞 Bake-Log: יומן אפייה</h1>
 
-<div class="mut">דף אחד: קלט מתכון → חישובים → אוטוליזה → תיעוד אפייה (עם חישובי זמנים + איבוד משקל).</div>
+    <section class="master-recipe">
+        <h2>המתכון המעודכן: לחם כפרי עם לימון</h2>
+        <ul>
+            <li><strong>קמח לבן/לחם:</strong> 300 גרם</li>
+            <li><strong>קמח שיפון:</strong> 36 גרם</li>
+            <li><strong>קמח סויה (4%):</strong> 14 גרם</li>
+            <li><strong>מים (75%):</strong> 262.5 גרם</li>
+            <li><strong>מחמצת:</strong> כרגיל</li>
+            <li><strong>מיץ לימון:</strong> 2.5 מ"ל (חצי כפית) מעורבבת במים</li>
+        </ul>
+        <p><em>הערה: הלימון והסויה יוצרים מרקם פלאפי במיוחד.</em></p>
+    </section>
 
-<table id="main">
-  <tr><th style="width:34%">פרמטר</th><th style="width:33%">ערך</th><th style="width:10%">יח׳</th><th style="width:23%">גרם (סה״כ)</th></tr>
+    <section>
+        <h2>סטטיסטיקה ואנליזה</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>תאריך</th>
+                    <th>סוג אפייה</th>
+                    <th>הידרציה</th>
+                    <th>תוצאה / פלאפי</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>09/02/26</td>
+                    <td>כפרי לימון</td>
+                    <td>75%</td>
+                    <td>9 (מצוין)</td>
+                </tr>
+                </tbody>
+        </table>
+    </section>
 
-  <tr>
-    <td>מתכון בסיסי</td>
-    <td colspan="2">
-      <select id="preset" class="txt" onchange="applyPreset()">
-        <option value="">— ידני —</option>
-        <option value="country">לחם כפרי (מחמצת)</option>
-        <option value="rye">שיפון 100% (מחמצת)</option>
-        <option value="african">לחם אפריקאי (מחמצת)</option>
-        <option value="taglio">אל טליו (שמרים)</option>
-        <option value="focaccia">פוקצ׳ה (שמרים)</option>
-      </select>
-    </td>
-    <td class="gcell" id="presetDough">—</td>
-  </tr>
+    <section>
+        <h2>קבצי אפייה ותמונות</h2>
+        
+        <div class="log-entry">
+            <h3>אפיות אחרונות:</h3>
+            <a href="focaccia.html" class="file-link">📄 פוקאצ'ה</a>
+            <a href="rye100.html" class="file-link">📄 שיפון 100%</a>
+            <a href="country-lemon-2.html" class="file-link">📄 כפרי-לימון-2</a>
+        </div>
 
-  <tr><td>שם המאפה</td><td colspan="2"><input class="txt" id="name" placeholder="למשל: לחם כפרי" oninput="calcAll()"></td><td>—</td></tr>
-
-  <tr><td>קמח (ליחידה)</td><td><input class="num" id="F_unit" value="350" type="number" step="1" oninput="calcAll()"></td><td>גרם</td><td id="gF">—</td></tr>
-  <tr><td>מס׳ יחידות</td><td><input class="num" id="U" value="1" type="number" step="0.1" min="0" oninput="calcAll()" onchange="calcAll()"></td><td>יח׳</td><td>—</td></tr>
-
-  <tr><td>הידרציה</td><td><input class="num" id="H" value="75" type="number" step="0.1" oninput="calcAll()"></td><td>%</td><td id="gW">—</td></tr>
-  <tr><td>מלח</td><td><input class="num" id="S" value="2.4" type="number" step="0.1" oninput="calcAll()"></td><td>%</td><td id="gS">—</td></tr>
-
-  <tr id="rowLev"><td>מחמצת (אחוז אופה)</td><td><input class="num" id="L" value="20" type="number" step="0.1" oninput="calcAll()"></td><td>%</td><td id="gL">—</td></tr>
-  <tr id="rowLevHyd"><td>הידרציית מחמצת</td><td><input class="num" id="LH" value="100" type="number" step="1" oninput="calcAll()"></td><td>%</td><td>—</td></tr>
-
-  <tr id="rowYeast"><td>שמרים</td><td><input class="num" id="Y" value="0" type="number" step="0.1" oninput="calcAll()"></td><td>%</td><td id="gY">—</td></tr>
-  <tr id="rowOil"><td>שמן</td><td><input class="num" id="O" value="0" type="number" step="0.1" oninput="calcAll()"></td><td>%</td><td id="gO">—</td></tr>
-
-  <tr><th colspan="4">תוספות (שמות חופשיים, אחוזי אופה)</th></tr>
-  <!-- additions rows inserted here -->
-
-  <tr id="sumRow"><th colspan="3">סה״כ בצק (כולל תוספות)</th><th id="gTrow">—</th></tr>
-</table>
-
-<div class="grid" style="margin-top:8px">
-  <button class="btn" type="button" onclick="addAddRow()">+ תוספת</button>
-  <span style="margin-right:10px"><b>משקל ליחידה</b>: <span id="gPU">—</span> גרם</span>
-</div>
-
-<div class="grid" style="margin-top:16px">
-  <b>תמהיל קמחים (%)</b>
-  <div class="mut">האחוזים מתוך סה״כ הקמח. סכום חייב להיות 100%.</div>
-  <table id="flours" style="max-width:560px">
-    <tr><th>שם קמח</th><th style="width:120px">%</th><th style="width:60px"></th></tr>
-  </table>
-  <button class="btn" type="button" onclick="addFlour()">+ קמח</button>
-  <div id="mixMsg" class="warn"></div>
-</div>
-
-<div class="grid" style="margin-top:16px">
-  <b>אוטוליזה (ללא מחמצת)</b>
-  <div class="mut">הנחה: המחמצת עשויה מקמח לחם. באוטוליזה קמח לחם ומים מופחתים לפי המחמצת.</div>
-  <table id="auto" style="max-width:560px">
-    <tr><th>רכיב</th><th style="width:180px">גרם</th></tr>
-  </table>
-</div>
-
-<details id="logBox" open>
-  <summary><b>תיעוד אפייה</b></summary>
-  <div class="mut" style="margin-top:6px">מכניסים שעות. מחושב: באלק (חלוקה−מיקס) וזמן כולל עד קירור (קירור−מיקס). איבוד משקל מחושב מול סה״כ בצק למעלה.</div>
-
-  <table style="max-width:920px;margin-top:8px">
-    <tr><th style="width:34%">שדה</th><th style="width:33%">ערך</th><th style="width:33%">מחושב</th></tr>
-
-    <tr><td>תאריך</td><td><input id="logDate" type="date" oninput="calcLog()"></td><td class="gcell">—</td></tr>
-
-    <tr><td>מיקס</td><td><input id="tMix" type="time" oninput="calcLog()"></td><td class="gcell">—</td></tr>
-    <tr><td>חלוקה</td><td><input id="tDiv" type="time" oninput="calcLog()"></td><td class="gcell" id="bulkOut">באלק: —</td></tr>
-    <tr><td>שייפ</td><td><input id="tShape" type="time" oninput="calcLog()"></td><td class="gcell">—</td></tr>
-    <tr><td>כניסה לקירור</td><td><input id="tFridge" type="time" oninput="calcLog()"></td><td class="gcell" id="totalOut">סה״כ עד קירור: —</td></tr>
-
-    <tr>
-      <td>משקל אחרי אפייה (גרם)</td>
-      <td><input id="bakedW" class="num" type="number" step="1" oninput="calcLog()"></td>
-      <td class="gcell" id="lossOut">איבוד: —</td>
-    </tr>
-
-    <tr><td>תהליך (טקסט חופשי)</td><td colspan="2"><textarea id="procTxt" placeholder="למשל: 4 קיפולים, שייפ רפוי, קירור לילה..."></textarea></td></tr>
-    <tr><td>תוצאה (טקסט חופשי)</td><td colspan="2"><textarea id="resTxt" placeholder="למשל: נפח טוב, קראסט דק, קראמב פתוח/לייסי..."></textarea></td></tr>
-  </table>
-</details>
-
-<script>
-const $=id=>document.getElementById(id);
-const r=x=>x<10?x.toFixed(1):Math.round(x);
-
-function clearFlours(){ Array.from($("flours").querySelectorAll("tr")).slice(1).forEach(tr=>tr.remove()); }
-function clearAdds(){ Array.from(document.querySelectorAll('tr[data-kind="add"]')).forEach(tr=>tr.remove()); }
-
-function addAddRow(name="", pct=0){
-  const tr=document.createElement("tr");
-  tr.dataset.kind="add";
-  tr.innerHTML = `
-    <td><input class="txt" value="${name}" placeholder="שם תוספת (גרעינים / שיבולת שועל / קמח סויה...)" oninput="calcAll()"></td>
-    <td><input class="num" type="number" step="0.1" value="${pct}" oninput="calcAll()"></td>
-    <td>%</td>
-    <td class="gcell"><span class="gout">—</span> <button class="btn" type="button" title="מחק">×</button></td>`;
-  tr.querySelector("button").onclick=()=>{tr.remove();calcAll();};
-  $("main").tBodies[0].insertBefore(tr, $("sumRow"));
-}
-
-function addFlour(name="", pct=0){
-  const tr=document.createElement("tr");
-  tr.innerHTML = `
-    <td><input class="txt" value="${name}" placeholder="שם קמח" oninput="calcAll()"></td>
-    <td><input class="num" type="number" step="0.1" value="${pct}" oninput="calcAll()"></td>
-    <td><button class="btn" type="button">×</button></td>`;
-  tr.querySelector("button").onclick=()=>{tr.remove();calcAll();};
-  $("flours").appendChild(tr);
-}
-
-function flourRows(){
-  const trs=Array.from($("flours").querySelectorAll("tr")).slice(1);
-  return trs.map(tr=>{
-    const ins=tr.querySelectorAll("input");
-    const name=(ins[0]?.value||"").trim();
-    const pct=parseFloat(ins[1]?.value);
-    return {name, pct:Number.isFinite(pct)?pct:0};
-  }).filter(x=>x.name || x.pct!==0);
-}
-
-function addRows(){
-  return Array.from(document.querySelectorAll('tr[data-kind="add"]')).map(tr=>{
-    const ins=tr.querySelectorAll("input");
-    const name=(ins[0]?.value||"").trim();
-    const pct=parseFloat(ins[1]?.value);
-    const gout=tr.querySelector(".gout");
-    return {name, pct:Number.isFinite(pct)?pct:0, gout};
-  });
-}
-
-function setRowVisible(id, visible){ const el=$(id); if(el) el.style.display = visible? "" : "none"; }
-
-function applyPreset(){
-  const p=$("preset").value;
-
-  clearAdds();
-  clearFlours();
-
-  // base defaults
-  $("presetDough").textContent="—";
-  $("name").value="";
-  $("F_unit").value=350;
-  $("U").value=1;
-  $("H").value=75;
-  $("S").value=2.4;
-  $("L").value=0;
-  $("LH").value=100;
-  $("Y").value=0;
-  $("O").value=0;
-
-  if(p==="country"){
-    $("name").value="לחם כפרי";
-    $("F_unit").value=350;
-    $("H").value=75;
-    $("S").value=2.4;
-    $("L").value=20;
-    addFlour("קמח לחם",90);
-    addFlour("קמח שיפון",10);
-    $("presetDough").textContent="≈ 630g (יח׳)";
-  } else if(p==="rye"){
-    $("name").value="שיפון 100%";
-    $("F_unit").value=400;
-    $("H").value=100;
-    $("S").value=2.2;
-    $("L").value=25;
-    addFlour("קמח שיפון",100);
-    $("presetDough").textContent="≈ 910g (יח׳)";
-  } else if(p==="african"){
-    $("name").value="לחם אפריקאי";
-    $("F_unit").value=400;
-    $("H").value=95;
-    $("S").value=2.4;
-    $("L").value=25;
-    addFlour("קמח מלא",50);
-    addFlour("קמח לחם",50);
-    $("presetDough").textContent="≈ 920g (יח׳)";
-  } else if(p==="taglio"){
-    $("name").value="אל טליו";
-    $("F_unit").value=290;
-    $("H").value=77;
-    $("S").value=2.0;
-    $("Y").value=0.3;
-    $("O").value=2.0;
-    addFlour("קמח לחם",100);
-    $("presetDough").textContent="≈ 525g (יח׳)";
-  } else if(p==="focaccia"){
-    $("name").value="פוקצ׳ה";
-    $("F_unit").value=550;
-    $("H").value=77;
-    $("S").value=2.0;
-    $("Y").value=0.3;
-    $("O").value=2.0;
-    addFlour("קמח לחם",100);
-    $("presetDough").textContent="≈ 995g (יח׳)";
-  } else {
-    addFlour("קמח לחם",100);
-    addFlour("קמח מלא",0);
-    addFlour("קמח שיפון",0);
-  }
-
-  addAddRow("",0);
-  calcAll();
-}
-
-function updateConditionalVisibility(){
-  const L=+$("L").value||0;
-  const Y=+$("Y").value||0;
-  const p=$("preset").value;
-
-  // hide levain rows if levain is 0 OR yeast-style presets
-  const showLev = (L!==0) && !(p==="taglio"||p==="focaccia");
-  setRowVisible("rowLev", showLev);
-  setRowVisible("rowLevHyd", showLev);
-
-  // hide yeast if 0 OR sourdough presets
-  const showY = (Y!==0) && !(p==="country"||p==="rye"||p==="african");
-  setRowVisible("rowYeast", showY);
-
-  // hide oil if 0 and sourdough presets
-  const O=+$("O").value||0;
-  setRowVisible("rowOil", !(O===0 && (p==="country"||p==="rye"||p==="african")));
-}
-
-function calcAll(){
-  updateConditionalVisibility();
-
-  const F_unit=+$("F_unit").value||0;
-  const U=+(+$("U").value||0);
-  const F=Math.max(0, F_unit*U);
-
-  const H=+$("H").value||0;
-  const S=+$("S").value||0;
-  const L=+$("L").value||0;
-  const LH=+$("LH").value||100;
-  const Y=+$("Y").value||0;
-  const O=+$("O").value||0;
-
-  const W=F*H/100;
-  const Salt=F*S/100;
-  const Lev=F*L/100;
-  const Ye=F*Y/100;
-  const Oil=F*O/100;
-
-  $("gF").textContent = F>0? r(F):"—";
-  $("gW").textContent = W>0? r(W):"—";
-  $("gS").textContent = Salt>0? r(Salt):"—";
-  $("gL").textContent = Lev>0? r(Lev):"—";
-  $("gY").textContent = Ye>0? r(Ye):"—";
-  $("gO").textContent = Oil>0? r(Oil):"—";
-
-  // additions
-  let addsSum=0;
-  addRows().forEach(a=>{
-    const g=F*(a.pct||0)/100;
-    if(a.name && g>0){ a.gout.textContent=r(g); addsSum+=g; }
-    else a.gout.textContent="—";
-  });
-
-  // flour mix validation
-  const fls=flourRows();
-  const sumPct=fls.reduce((acc,x)=>acc+(x.pct||0),0);
-  const msg=$("mixMsg");
-  msg.className="warn";
-  if(fls.length===0) msg.textContent="⚠ הוסף לפחות קמח אחד";
-  else if(Math.abs(sumPct-100)>0.0001) msg.textContent="⚠ סכום אחוזי קמחים: "+sumPct.toFixed(1)+"% (צריך 100%)";
-  else { msg.className="ok"; msg.textContent="✓ תמהיל 100%"; }
-
-  // levain flour+water
-  const lf = (Lev>0)? (Lev/(1+(LH/100))) : 0;
-  const lw = lf*(LH/100);
-
-  // autolyse breakdown
-  const auto=$("auto");
-  auto.innerHTML='<tr><th>רכיב</th><th>גרם</th></tr>';
-
-  let idxBread=fls.findIndex(f=>f.name.includes("לחם"));
-  if(idxBread<0 && fls.length>0) idxBread=0;
-
-  fls.forEach((f,i)=>{
-    let g=F*(f.pct||0)/100;
-    if(i===idxBread && lf>0) g=Math.max(0, g-lf);
-    if(f.name && g>0) auto.innerHTML += `<tr><td>${f.name}</td><td>${r(g)}</td></tr>`;
-  });
-
-  const waterAuto=Math.max(0, W-lw);
-  if(waterAuto>0) auto.innerHTML += `<tr><td>מים</td><td>${r(waterAuto)}</td></tr>`;
-
-  const total=F+W+Salt+Ye+Oil+addsSum; // total dough without levain
-  $("gTrow").textContent = total>0? r(total):"—";
-  $("gPU").textContent = (total>0 && U>0)? r(total/U):"—";
-
-  calcLog(); // keep loss in sync
-}
-
-function parseTimeToMin(t){
-  if(!t) return null;
-  const [hh,mm]=t.split(":").map(x=>parseInt(x,10));
-  if(Number.isNaN(hh)||Number.isNaN(mm)) return null;
-  return hh*60+mm;
-}
-function fmtDur(mins){
-  if(mins===null) return "—";
-  const h=Math.floor(mins/60);
-  const m=mins%60;
-  return (h>0? (h+"ש ") : "") + (m+"ד׳");
-}
-function diffMins(a,b){
-  if(a===null||b===null) return null;
-  let d=b-a;
-  if(d<0) d+=24*60; // cross midnight
-  return d;
-}
-function calcLog(){
-  const mix=parseTimeToMin($("tMix").value);
-  const div=parseTimeToMin($("tDiv").value);
-  const fr=parseTimeToMin($("tFridge").value);
-
-  const bulk=diffMins(mix,div);
-  const tot=diffMins(mix,fr);
-
-  $("bulkOut").textContent = "באלק: " + fmtDur(bulk);
-  $("totalOut").textContent = "סה״כ עד קירור: " + fmtDur(tot);
-
-  const baked=+($("bakedW").value||0);
-  const totalTxt=$("gTrow").textContent;
-  const total = (totalTxt==="—")?0:parseFloat(totalTxt);
-  if(baked>0 && total>0){
-    const loss=(1-(baked/total))*100;
-    $("lossOut").textContent = "איבוד: " + (loss<10?loss.toFixed(1):Math.round(loss)) + "%";
-  } else {
-    $("lossOut").textContent="איבוד: —";
-  }
-}
-
-// defaults
-addAddRow("",0);
-addFlour("קמח לחם",100);
-addFlour("קמח מלא",0);
-addFlour("קמח שיפון",0);
-calcAll();
-
-function _safeFilePart(s){
-  return (s||"").toString().trim()
-    .replace(/[\\\/:*?"<>|]+/g,"-")
-    .replace(/\s+/g,"-")
-    .slice(0,60) || "אפייה";
-}
-function _todayISO(){
-  const d=new Date();
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,"0");
-  const day=String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
-}
-
-// Save current state as a NEW HTML file (snapshot)
-function saveBake(){
-  // Clone current DOM as text, then inject current input/textarea/select states into the clone
-  const parser=new DOMParser();
-  const doc=parser.parseFromString(document.documentElement.outerHTML, "text/html");
-
-  // Copy input values
-  document.querySelectorAll("input").forEach((el,i)=>{
-    const clone=doc.querySelectorAll("input")[i];
-    if(!clone) return;
-    if(el.type==="checkbox"||el.type==="radio"){
-      clone.checked=el.checked;
-      if(el.checked) clone.setAttribute("checked","");
-      else clone.removeAttribute("checked");
-    }else{
-      clone.value=el.value;
-      clone.setAttribute("value", el.value);
-    }
-  });
-
-  // Copy selects
-  document.querySelectorAll("select").forEach((el,i)=>{
-    const clone=doc.querySelectorAll("select")[i];
-    if(!clone) return;
-    clone.value=el.value;
-    // ensure selected option
-    clone.querySelectorAll("option").forEach(opt=>{
-      if(opt.value===el.value) opt.setAttribute("selected","");
-      else opt.removeAttribute("selected");
-    });
-  });
-
-  // Copy textareas
-  document.querySelectorAll("textarea").forEach((el,i)=>{
-    const clone=doc.querySelectorAll("textarea")[i];
-    if(!clone) return;
-    clone.value=el.value;
-    clone.textContent=el.value;
-  });
-
-  // Optional: include a small stamp in the title for clarity
-  const name = (document.getElementById("name")?.value)||"";
-  const stamp = `${_todayISO()} ${name}`.trim();
-  if(stamp){
-    const t=doc.querySelector("title");
-    if(t) t.textContent = t.textContent.replace(/\s*–.*$/,"") + " – " + stamp;
-  }
-
-  const fname = `${_todayISO()}_${_safeFilePart(name)}.html`;
-  const out = "<!doctype html>\n" + doc.documentElement.outerHTML;
-
-  const blob=new Blob([out], {type:"text/html;charset=utf-8"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=fname;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
-}
-</script>
+        <div class="log-entry">
+            <h3>תיעוד ויזואלי:</h3>
+            <p>כאן תוכל להוסיף תמונות על ידי הוספת שורת הקוד שדיברנו עליה.</p>
+            </div>
+    </section>
 
 </body>
 </html>
